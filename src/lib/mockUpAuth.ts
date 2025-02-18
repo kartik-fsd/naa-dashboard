@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { User } from "../types/auth";
 
 // Mock user data
@@ -15,13 +16,13 @@ const MOCK_USERS: User[] = [
 const VERIFICATION_DELAY = 1000;
 const VALID_OTP = '123456';
 
-export const sendOTP = async (phoneNumber: string): Promise<string> => {
+export const sendOTP = async (_phoneNumber: string): Promise<string> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, VERIFICATION_DELAY));
     return `mock-verification-id-${Date.now()}`;
 };
 
-export const verifyOTP = async (verificationId: string, otp: string): Promise<User | null> => {
+export const verifyOTP = async (_verificationId: string, otp: string): Promise<User | null> => {
     await new Promise(resolve => setTimeout(resolve, VERIFICATION_DELAY));
 
     if (otp !== VALID_OTP) {
