@@ -21,6 +21,7 @@ import DematAuth from "../components/link-assets/DemmatAccountLink";
 import MutualFundAuth from "../components/link-assets/MutualFundLink";
 import EPFAuth from "../components/link-assets/EPFAccountLinking";
 import { CallbackHandler } from "../sandbox/callbackHandler";
+import Estateplanning from "../pages/Estate-planning";
 // Define auth flow configurations
 const AUTH_FLOWS = {
   "hdfc-auth": HDFCAuthSandbox,
@@ -65,6 +66,10 @@ export const router = createBrowserRouter(
         {
           path: "documents",
           element: <DocumentVaultPage />,
+        },
+        {
+          path: "estate-planning",
+          element: <Estateplanning />,
         },
         // Asset Linking Routes
         {
