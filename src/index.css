@@ -1,0 +1,53 @@
+/* theme.css */
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-graphite: #2c2c2c;
+  --color-navy: #002147;
+  --color-emerald: #005f56;
+  --color-gold: #c19a6b;
+  --color-platinum: #f5f5f5;
+  --color-accent: #f4ede4;
+
+  /* Opacity variants */
+  --opacity-50: 0.5;
+
+  /* Font Size Scale */
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 36px;
+
+  /* Spacing Scale */
+  --spacing: 0.25rem;
+
+  /* Border Radius */
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Transitions */
+  --transition-all: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@layer utilities {
+  .bg-gradient-brand {
+    background: linear-gradient(
+      to bottom right,
+      var(--color-navy),
+      var(--color-emerald)
+    );
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg-hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .lg-hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
