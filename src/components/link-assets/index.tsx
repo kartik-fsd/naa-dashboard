@@ -14,7 +14,13 @@
 // } from "@heroicons/react/24/outline";
 // import { BanknotesIcon } from "@heroicons/react/24/solid";
 // import { ArrowSmallRightIcon } from "@heroicons/react/20/solid";
-// import { BankLinkingFlow } from "./BankLink";
+// import BankLinkingFlow from "./BankLink";
+// import {
+//   getAssetConfig,
+//   LINKING_CONFIGS,
+// } from "../../utils/assestsLinkingConfig";
+// import { assetLinkingNavigator } from "../../routes";
+// import { useNavigate } from "react-router-dom";
 
 // interface AssetType {
 //   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -97,187 +103,63 @@
 //   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 //   title: string;
 //   description?: string;
-//   category: string;
+//   category: "stocks" | "funds" | "retirement" | "property" | "others";
 // }
-
-// // const AssetCard: React.FC<AssetCardProps> = ({
-// //   icon: Icon,
-// //   title,
-// //   description,
-// //   category,
-// // }) => {
-// //   const [isHovered, setIsHovered] = useState(false);
-
-// //   const getCategoryColor = (category: string) => {
-// //     const colors: { [key: string]: string } = {
-// //       stocks: "bg-blue-50 text-blue-700",
-// //       funds: "bg-purple-50 text-purple-700",
-// //       retirement: "bg-green-50 text-green-700",
-// //       property: "bg-orange-50 text-orange-700",
-// //       others: "bg-gray-50 text-gray-700",
-// //     };
-// //     return colors[category] || colors.others;
-// //   };
-
-// //   return (
-// //     <motion.button
-// //       whileHover={{ y: -5 }}
-// //       whileTap={{ scale: 0.95 }}
-// //       onHoverStart={() => setIsHovered(true)}
-// //       onHoverEnd={() => setIsHovered(false)}
-// //       className="group relative flex flex-col items-center p-4 bg-white rounded-xl
-// //                 border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all"
-// //     >
-// //       <div
-// //         className={`mb-3 w-14 h-14 flex items-center justify-center rounded-full
-// //                     ${getCategoryColor(
-// //                       category
-// //                     )} transition-colors duration-200`}
-// //       >
-// //         <Icon className="w-8 h-8" />
-// //       </div>
-// //       <p className="text-sm font-medium text-gray-900 text-center">{title}</p>
-
-// //       {description && (
-// //         <AnimatePresence>
-// //           {isHovered && (
-// //             <motion.div
-// //               initial={{ opacity: 0, y: 10 }}
-// //               animate={{ opacity: 1, y: 0 }}
-// //               exit={{ opacity: 0, y: 10 }}
-// //               className="absolute inset-0 flex items-center justify-center bg-white/95
-// //                        rounded-xl backdrop-blur-sm p-3"
-// //             >
-// //               <div className="text-center">
-// //                 <p className="text-sm text-gray-600">{description}</p>
-// //                 <PlusCircleIcon className="w-6 h-6 mx-auto mt-2 text-blue-600" />
-// //               </div>
-// //             </motion.div>
-// //           )}
-// //         </AnimatePresence>
-// //       )}
-// //     </motion.button>
-// //   );
-// // };
-
-// // export function LinkAssetsSection() {
-// //   const [isExpanded, setIsExpanded] = useState(false);
-// //   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-// //   const filteredAssets = selectedCategory
-// //     ? assets.filter((asset) => asset.category === selectedCategory)
-// //     : assets;
-
-// //   const visibleAssets = isExpanded
-// //     ? filteredAssets
-// //     : filteredAssets.slice(0, 6);
-
-// //   return (
-// //     <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
-// //       {/* Header */}
-// //       <div className="relative overflow-hidden">
-// //         <div className="absolute inset-0 bg-gradient-to-r from-gray-900 to-gray-800" />
-// //         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.1),_transparent_50%)]" />
-// //         <div className="relative px-6 py-4">
-// //           <h2 className="text-xl font-semibold text-white">Link Your Assets</h2>
-// //           <p className="mt-1 text-sm text-blue-100">
-// //             Connect your financial accounts to get started
-// //           </p>
-// //         </div>
-// //       </div>
-
-// //       {/* Category Filters */}
-// //       <div className="px-6 pt-4 overflow-x-auto">
-// //         <div className="flex space-x-2 pb-2">
-// //           <button
-// //             onClick={() => setSelectedCategory(null)}
-// //             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
-// //                      ${
-// //                        !selectedCategory
-// //                          ? "bg-gray-900 text-white"
-// //                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-// //                      }`}
-// //           >
-// //             All
-// //           </button>
-// //           {Object.entries(assetCategories).map(([key, { label, color }]) => (
-// //             <button
-// //               key={key}
-// //               onClick={() => setSelectedCategory(key)}
-// //               className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap
-// //                        transition-colors ${
-// //                          selectedCategory === key
-// //                            ? `bg-${color}-100 text-${color}-700`
-// //                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-// //                        }`}
-// //             >
-// //               {label}
-// //             </button>
-// //           ))}
-// //         </div>
-// //       </div>
-
-// //       {/* Assets Grid */}
-// //       <div className="p-6">
-// //         <motion.div
-// //           layout
-// //           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
-// //         >
-// //           <AnimatePresence>
-// //             {visibleAssets.map((asset, index) => (
-// //               <motion.div
-// //                 key={asset.title}
-// //                 layout
-// //                 initial={{ opacity: 0, scale: 0.9 }}
-// //                 animate={{ opacity: 1, scale: 1 }}
-// //                 exit={{ opacity: 0, scale: 0.9 }}
-// //                 transition={{ delay: index * 0.1 }}
-// //               >
-// //                 <AssetCard {...asset} />
-// //               </motion.div>
-// //             ))}
-// //           </AnimatePresence>
-// //         </motion.div>
-// //       </div>
-
-// //       {/* Expand/Collapse Button */}
-// //       {filteredAssets.length > 6 && (
-// //         <div className="border-t border-gray-100 p-4">
-// //           <motion.button
-// //             whileHover={{ scale: 1.05 }}
-// //             whileTap={{ scale: 0.95 }}
-// //             onClick={() => setIsExpanded(!isExpanded)}
-// //             className="mx-auto flex items-center justify-center px-4 py-2 rounded-lg
-// //                      bg-gray-100 hover:bg-gray-200 transition-colors text-sm font-medium
-// //                      text-gray-700"
-// //           >
-// //             {isExpanded ? (
-// //               <>
-// //                 Show Less <ChevronUpIcon className="w-4 h-4 ml-1" />
-// //               </>
-// //             ) : (
-// //               <>
-// //                 Show More <ChevronDownIcon className="w-4 h-4 ml-1" />
-// //               </>
-// //             )}
-// //           </motion.button>
-// //         </div>
-// //       )}
-// //     </div>
-// //   );
-// // }
-
-// // export default LinkAssetsSection;
 // const AssetCard: React.FC<AssetCardProps> = ({
 //   icon: Icon,
 //   title,
 //   description,
 //   category,
 // }) => {
+//   const navigate = useNavigate();
 //   const [showBankLinking, setShowBankLinking] = useState(false);
 
+//   type ConfigKeyMapping = {
+//     [key: string]: keyof typeof LINKING_CONFIGS;
+//   };
+
+//   // Create the mapping with proper types
+//   const configKeyMappings: ConfigKeyMapping = {
+//     "PPF Account": "ppf",
+//     NPS: "nps",
+//     EPF: "epf",
+//     "Demat Holdings": "stocks",
+//     "Mutual Funds": "funds",
+//     "Bank Accounts": "bank",
+//     "Fixed Deposits": "fd",
+//     "Gold & Silver ETFs": "etf",
+//     "Government Bonds": "bonds",
+//     "Insurance Policies": "insurance",
+//   };
+
 //   const handleClick = () => {
-//     setShowBankLinking(true);
+//     // If it's a bank-related asset, show the modal
+//     if (title === "Bank Accounts" || title === "Fixed Deposits") {
+//       setShowBankLinking(true);
+//       return;
+//     }
+//     // Get the correct config key based on title
+//     const configKey = configKeyMappings[title];
+
+//     if (!configKey) {
+//       console.warn(`No configuration found for asset: ${title}`);
+//       return;
+//     }
+
+//     const config = getAssetConfig(configKey);
+//     if (!config) {
+//       console.warn(`No configuration found for config key: ${configKey}`);
+//       return;
+//     }
+
+//     const [defaultProvider] = config.providers;
+//     navigate(assetLinkingNavigator.toSandbox(defaultProvider), {
+//       state: {
+//         assetType: configKey,
+//         assetTitle: title,
+//         returnUrl: assetLinkingNavigator.toCallback(),
+//       },
+//     });
 //   };
 
 //   const getCategoryStyle = (category: string) => {
@@ -351,12 +233,16 @@
 //         </div>
 //         <ArrowSmallRightIcon className="w-4 h-4 text-gray-400 flex-shrink-0" />
 //       </motion.div>
-//       <BankLinkingFlow
-//         isOpen={showBankLinking}
-//         onClose={() => setShowBankLinking(false)}
-//         assetType={category}
-//         assetTitle={title}
-//       />
+
+//       {/* Show bank linking modal only for bank-related assets */}
+//       {(title === "Bank Accounts" || title === "Fixed Deposits") && (
+//         <BankLinkingFlow
+//           isOpen={showBankLinking}
+//           onClose={() => setShowBankLinking(false)}
+//           assetType={category}
+//           assetTitle={title}
+//         />
+//       )}
 //     </>
 //   );
 // };
@@ -500,7 +386,8 @@
 
 // export default LinkAssetsSection;
 
-import React, { useEffect, useState } from "react";
+// src/components/link-assets/index.tsx
+import React, { useState } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import {
   ChevronUpIcon,
@@ -523,6 +410,8 @@ import {
 } from "../../utils/assestsLinkingConfig";
 import { assetLinkingNavigator } from "../../routes";
 import { useNavigate } from "react-router-dom";
+import { useLinkedAssets } from "../../hooks/useLinkedAssets";
+import { mockAssets } from "../../lib/assetsMockup";
 
 interface AssetType {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -606,12 +495,17 @@ interface AssetCardProps {
   title: string;
   description?: string;
   category: "stocks" | "funds" | "retirement" | "property" | "others";
+  isLinked?: boolean;
+  onAssetLinked: (title: string) => void;
 }
+
 const AssetCard: React.FC<AssetCardProps> = ({
   icon: Icon,
   title,
   description,
   category,
+  isLinked = false,
+  onAssetLinked,
 }) => {
   const navigate = useNavigate();
   const [showBankLinking, setShowBankLinking] = useState(false);
@@ -655,6 +549,10 @@ const AssetCard: React.FC<AssetCardProps> = ({
     }
 
     const [defaultProvider] = config.providers;
+
+    // Mark the asset as linked before navigating
+    onAssetLinked(title);
+
     navigate(assetLinkingNavigator.toSandbox(defaultProvider), {
       state: {
         assetType: configKey,
@@ -698,6 +596,11 @@ const AssetCard: React.FC<AssetCardProps> = ({
   };
 
   const style = getCategoryStyle(category);
+
+  // If the asset is linked, we could render a different state or not render it at all
+  if (isLinked) {
+    return null; // Don't show linked assets
+  }
 
   return (
     <>
@@ -752,23 +655,51 @@ const AssetCard: React.FC<AssetCardProps> = ({
 export function LinkAssetsSection() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
-  const [filteredAssets, setFilteredAssets] = useState(assets);
-  const [visibleAssets, setVisibleAssets] = useState(assets.slice(0, 4));
 
-  // Reset showAll when category changes
-  useEffect(() => {
-    setShowAll(false);
-    const newFilteredAssets = selectedCategory
-      ? assets.filter((asset) => asset.category === selectedCategory)
-      : assets;
-    setFilteredAssets(newFilteredAssets);
-    setVisibleAssets(newFilteredAssets.slice(0, 4));
-  }, [selectedCategory]);
+  // Initialize linked assets tracking
+  const {
+    //    availableAssets,
+    //    linkedAssets,
+    markAsLinked,
+    isLinked,
+  } = useLinkedAssets(mockAssets);
 
-  // Update visible assets when showAll changes
-  useEffect(() => {
-    setVisibleAssets(showAll ? filteredAssets : filteredAssets.slice(0, 4));
-  }, [showAll, filteredAssets]);
+  // Filter assets based on linked status and selected category
+  const getFilteredAssets = () => {
+    // Start with all assets
+    let filtered = assets;
+
+    // Filter by category if one is selected
+    if (selectedCategory) {
+      filtered = filtered.filter(
+        (asset) => asset.category === selectedCategory
+      );
+    }
+
+    // Filter out linked assets
+    filtered = filtered.filter((asset) => {
+      // Find the corresponding mockAsset to get its ID
+      const mockAsset = mockAssets.find((ma) => ma.title === asset.title);
+      if (!mockAsset) return true; // Keep it if we can't find a matching mockAsset
+      return !isLinked(mockAsset.id);
+    });
+
+    return filtered;
+  };
+
+  const filteredAssets = getFilteredAssets();
+
+  // Determine which assets to show based on showAll toggle
+  const visibleAssets = showAll ? filteredAssets : filteredAssets.slice(0, 4);
+
+  // Handler for when an asset is linked
+  const handleAssetLinked = (title: string) => {
+    // Find the corresponding mockAsset to get its ID
+    const mockAsset = mockAssets.find((ma) => ma.title === title);
+    if (mockAsset) {
+      markAsLinked(mockAsset.id);
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -837,25 +768,53 @@ export function LinkAssetsSection() {
             exit="exit"
             className="space-y-3 min-h-[300px]"
           >
-            <AnimatePresence mode="wait">
-              {visibleAssets.map((asset, index) => (
-                <motion.div
-                  key={asset.title}
-                  layout
-                  custom={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{
-                    type: "spring",
-                    duration: 0.2,
-                    delay: index * 0.02,
-                  }}
-                >
-                  <AssetCard {...asset} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
+            {visibleAssets.length > 0 ? (
+              <AnimatePresence mode="wait">
+                {visibleAssets.map((asset, index) => {
+                  // Find the corresponding mockAsset to check if it's linked
+                  const mockAsset = mockAssets.find(
+                    (ma) => ma.title === asset.title
+                  );
+                  const isAssetLinked = mockAsset
+                    ? isLinked(mockAsset.id)
+                    : false;
+
+                  return (
+                    <motion.div
+                      key={asset.title}
+                      layout
+                      custom={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{
+                        type: "spring",
+                        duration: 0.2,
+                        delay: index * 0.02,
+                      }}
+                    >
+                      <AssetCard
+                        {...asset}
+                        isLinked={isAssetLinked}
+                        onAssetLinked={handleAssetLinked}
+                      />
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-8">
+                <p className="text-gray-500 text-center">
+                  {selectedCategory
+                    ? `All ${
+                        assetCategories[
+                          selectedCategory as keyof typeof assetCategories
+                        ].label
+                      } have been linked`
+                    : "All assets have been linked"}
+                </p>
+              </div>
+            )}
           </motion.div>
 
           {/* Show More/Less Button */}

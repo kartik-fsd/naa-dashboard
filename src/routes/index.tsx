@@ -1,3 +1,4 @@
+// src/routes/index.tsx - Update to include asset management page
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { AuthRoute } from "./authRoute";
@@ -7,9 +8,9 @@ import Home from "../pages/home";
 import Portfolio from "../pages/portfolio";
 import NomineesPage from "../pages/nominee/page";
 import DocumentVaultPage from "../pages/documents/page";
+import AssetManagementPage from "../pages/asset-management";
 
 // Import Sandbox Components
-
 import { LINKING_CONFIGS } from "../utils/assestsLinkingConfig";
 import { AccountAggregator } from "../components/link-assets/AccountAggreagator";
 import { SandboxRouter } from "../sandbox/sandBox";
@@ -21,7 +22,9 @@ import DematAuth from "../components/link-assets/DemmatAccountLink";
 import MutualFundAuth from "../components/link-assets/MutualFundLink";
 import EPFAuth from "../components/link-assets/EPFAccountLinking";
 import { CallbackHandler } from "../sandbox/callbackHandler";
-import Estateplanning from "../pages/Estate-planning";
+import Estateplanning from "../pages/estate-planning";
+import ResourcesPage from "../pages/resource";
+
 // Define auth flow configurations
 const AUTH_FLOWS = {
   "hdfc-auth": HDFCAuthSandbox,
@@ -70,6 +73,15 @@ export const router = createBrowserRouter(
         {
           path: "estate-planning",
           element: <Estateplanning />,
+        },
+        {
+          path: "resources",
+          element: <ResourcesPage />,
+        },
+        // Asset Management Route
+        {
+          path: "assets",
+          element: <AssetManagementPage />,
         },
         // Asset Linking Routes
         {

@@ -1,4 +1,4 @@
-// components/sandbox/callbackHandler.tsx
+// src/sandbox/callbackHandler.tsx
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -8,6 +8,8 @@ import {
   ClockIcon,
   BanknotesIcon,
 } from "@heroicons/react/24/outline";
+import { mockAssets } from "../lib/assetsMockup";
+import { useLinkedAssets } from "../hooks/useLinkedAssets";
 
 type CallbackStatus = "success" | "error" | "timeout";
 type AssetType = "bank" | "demat" | "mf" | "epf";
@@ -63,12 +65,23 @@ const MOCK_ACCOUNTS: Record<AssetType, LinkedAccount[]> = {
   ],
 };
 
+// Map asset types from URL to mockAssets categories
+const assetTypeToCategory: Record<string, string> = {
+  bank: "others",
+  demat: "stocks",
+  mf: "funds",
+  epf: "retirement",
+};
+
 export const CallbackHandler: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const [status, setStatus] = useState<CallbackStatus>();
   const [accounts, setAccounts] = useState<LinkedAccount[]>([]);
+
+  // Get the markAsLinked function from the hook
+  const { markAsLinked } = useLinkedAssets(mockAssets);
 
   useEffect(() => {
     const urlStatus = searchParams.get("status");
@@ -80,10 +93,23 @@ export const CallbackHandler: React.FC = () => {
     } else if (urlStatus === "success" && assetType) {
       setStatus("success");
       setAccounts(MOCK_ACCOUNTS[assetType] || []);
+
+      // Mark the associated asset as linked when callback succeeds
+      if (assetTypeToCategory[assetType]) {
+        const category = assetTypeToCategory[assetType];
+        const matchingAssets = mockAssets.filter(
+          (asset) => asset.category === category
+        );
+
+        // Mark all matching assets as linked
+        matchingAssets.forEach((asset) => {
+          markAsLinked(asset.id);
+        });
+      }
     } else {
       setStatus("error");
     }
-  }, [searchParams]);
+  }, [searchParams, markAsLinked]);
 
   const handleRetry = () => {
     // Go back to the linking flow
